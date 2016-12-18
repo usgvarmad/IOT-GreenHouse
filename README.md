@@ -1,21 +1,19 @@
-PROJECT NAME
+Barn Owl
 ============
 
 **University of Pennsylvania, ESE 519: Real Time and Embedded Systems**
 
-* TEAM MEMBER NAMES
-* [Blog](https://devpost.com/software/project-name) (TODO: Link to devpost submission)
+* Grayson Honan, Uzval Dontiboyina, Nikheel Vishwas Savant
+* [Blog](https://devpost.com/software/barn-owl)
 
 ### DESCRIPTION AND GOALS
-(TODO: Add a brief description of the project and Final Goals)
+Our goal with Barn Owl is to automate a micro-farm using the existing greenhouse outside of the Skirkanich building. Several plants will be cared for automatically in the greenhouse using various sensors (temperature/humidity, lighting, soil moisture) to monitor conditions. Watering intervals, fans, and lighting will be adjusted by our system to provide optimal growing conditions. A front-end interface will be used to monitor the greenhouse and provide manual control. The front-end interface will also allow users to specify which plants are being grown in order to better tailor the conditions to the needs of a certain plant species.
 
-### VIDEO
-[![](images/Thumb.jpg)](https://www.youtube.com/watch?v=vgEyvazwrU8)
+### VIDEOS
+[Barn Owl - Sensor Demo](https://www.youtube.com/watch?v=tP8d-07KyO8)
+[Barn Owl - Camera Slider Demo](https://www.youtube.com/watch?v=YH9azuOEQMQ)
+[Barn Owl - App Demo](https://www.youtube.com/watch?v=E3g4D_ApXCE)
 
-### IMAGES and GIFs
-Add images and screenshot of your product, user iterface, etc. Animated GIFs of User interfaces would be preferred.
-
-![](images/animated.gif)
 
 ### BUILD INSTRUCTIONS
 TODO: Steps to follow for anyone to use this code
