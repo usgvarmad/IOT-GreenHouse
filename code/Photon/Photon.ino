@@ -217,14 +217,7 @@ void loop() {
     float tempvalue1 = dht1.getTempFarenheit();
     float tempvalue2 = dht2.getTempFarenheit();
     float tempvalue3 = dht3.getTempFarenheit();
-    //Serial.println(String(tempvalue0));
-    //Serial.println(String(tempvalue1));
-    //Serial.println(String(tempvalue2));
-    //Serial.println(String(tempvalue3));
 
-    //if(isnan(temp0)|| isnan(temp1) || isnan(temp2) || isnan(temp3)){
-      //
-    //}
 
     temperature = (tempvalue0+tempvalue1+tempvalue2+tempvalue3)/4;
     if (temperature >1){
@@ -239,9 +232,6 @@ void loop() {
     humidity = (humid0+humid1+humid2+humid3)/4.0;
 
 
-    // Light level measurement
-    //float temp_measurement = analogRead(temperature_pin);
-    //temperature = (temp_measurement*0.805)/10;
 
     String str = String("sm0,"+String(soil0)+",")+
                   String("sm1,"+String(soil1)+",")+
@@ -257,8 +247,6 @@ void loop() {
       //POST
       client.println(str);
 
-      //Serial.println("str=" + str);
-      //Serial.println("Content-Length: " + String(str.length()));
 
     }
     else{

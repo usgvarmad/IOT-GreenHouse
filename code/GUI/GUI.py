@@ -16,6 +16,7 @@ from PIL import ImageTk, Image
 LARGE_FONT= ("Verdana", 12)
 style.use("ggplot")
 
+# Initial values for hysteresis 
 TEMP_U_THRESHOLD = -98
 TEMP_L_THRESHOLD = -99
 HUMID_U_THRESHOLD = 101
@@ -27,6 +28,7 @@ SOIL_1_THRESHOLD = 100
 SOIL_2_THRESHOLD = 100
 SOIL_3_THRESHOLD = 100
 
+# Plots for temp, humidity, etc
 f = Figure(figsize=(12,7), dpi=100)
 f.subplots_adjust(hspace = .35, wspace = .35)
 
@@ -37,6 +39,7 @@ d = f.add_subplot(233)
 e = f.add_subplot(235)
 fe = f.add_subplot(236)
 
+# Control Variables
 lightStr = "light:off"
 heatStr = "heat:off"
 fanStr = "fan:off"
@@ -45,6 +48,7 @@ w1Str = "w1:off"
 w2Str = "w2:off"
 w3Str = "w3:off"
 
+# Manual Mode Flags
 lightMFlag = False
 heatMFlag = False
 fanMFlag = False
@@ -53,12 +57,13 @@ w1MFlag = False
 w2MFlag = False
 w3MFlag = False
 
+# What's growing in each plot?
 plot1 = "empty"
 plot2 = "empty"
 plot3 = "empty"
 plot4 = "empty"
 
-OPTIONS = [
+OPTIONS = [ # Add an accompanying CSV file with the same name to add new plant types
         "empty",
         "kale",
         "thyme",
@@ -68,6 +73,7 @@ OPTIONS = [
         "lettuce"
 ]
 
+# Initial deadlines for scheduled maintenance tasks
 lightStart = datetime.datetime(100,1,1,1,0,0)
 lightDeadline = lightStart
 
@@ -88,12 +94,14 @@ img2 = 0
 img3 = 0
 img4 = 0
 
+# Update graphs
 def animate(i):
     def addSecs(tm, secs):
         fulldate = datetime.datetime(100, 1, 1, tm.hour, tm.minute, tm.second)
         fulldate = fulldate + datetime.timedelta(seconds=secs)
         return fulldate.time()
-
+	
+	# Care for global greenhouse conditions
     def careGreenhouse():
         print "Caring for greenhouse"
         print "TempU " + str(TEMP_U_THRESHOLD)
@@ -112,7 +120,7 @@ def animate(i):
                 print "Light Done!"
                 lightStr = "light:off"
             elif (lightStr == "light:off" and lightYList[-1] < LIGHT_THRESHOLD):
-                lightDeadline = addSecs(lightStart, 60*30)
+                lightDeadline = addSecs(lightStart, 60*30) # Turn on light in 30 minute intervals
                 lightStr = "light:on"
         else:
             lightStr = "light:on"
@@ -139,6 +147,8 @@ def animate(i):
                 fanStr = "fan:on"
         else:
             fanStr = "fan:on"
+            
+    # Care for each plant individually 
     def carePlots():
 
         global w0Str, w1Str, w2Str, w3Str
@@ -191,7 +201,9 @@ def animate(i):
                 w2Str = "w2:on"
         else:
             w2Str = "w2:on"
-
+	
+	# Append graphs with new data from each CSV file
+	#-----------------------------------------------
     pullData = open("temp.csv","r").read()
     dataList = pullData.split('\n')
     tempXList = []
@@ -257,7 +269,9 @@ def animate(i):
             sm3XList.append(int(x))
             sm3YList.append(int(y))
 
-
+	
+	# Update graphs with new data
+	#----------------------------
     a.clear()
     a.set_title('Temperature')
     a.set_ylabel('Temperature (deg F)')
@@ -323,7 +337,7 @@ class GreenhouseApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, PageOne, PageTwo, PageThree):
+        for F in (StartPage, PageOne):
 
             frame = F(container, self)
 
@@ -417,8 +431,6 @@ class StartPage(tk.Frame):
 
 
         tk.Frame.__init__(self,parent)
-        #label = tk.Label(self, text="Control Page", font=LARGE_FONT)
-        #label.pack(pady=10,padx=10)
 
         button2 = ttk.Button(self, text="Camera",
                             command=lambda: controller.show_frame(PageOne,0))
@@ -450,9 +462,6 @@ class StartPage(tk.Frame):
         variable3.set(OPTIONS[0]) # default value
         variable4 = StringVar()
         variable4.set(OPTIONS[0]) # default value
-
-        #option1 = OptionMenu(self, variable1, *OPTIONS,command = self.action1)
-        #option1.grid(row = 1, column = 1)
 
 
         label1 = tk.Label(self, text="Plot 1", font=LARGE_FONT)
@@ -501,12 +510,10 @@ class StartPage(tk.Frame):
 
         canvas = FigureCanvasTkAgg(f, self)
         canvas.show()
-        #canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+
         canvas.get_tk_widget().grid(row = 4, column = 1, columnspan = 3, rowspan = 4)
 
-        #toolbar = NavigationToolbar2TkAgg(canvas, self)
-        #toolbar.update()
-        #canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
 
     def switchPlot1(self,val):
         global plot1, TEMP_U_THRESHOLD, TEMP_L_THRESHOLD, HUMID_U_THRESHOLD
@@ -684,8 +691,7 @@ class PageOne(tk.Frame):
         img2 = ImageTk.PhotoImage(file = "plot2.jpg")
         img3 = ImageTk.PhotoImage(file = "plot3.jpg")
         img4 = ImageTk.PhotoImage(file = "plot4.jpg")
-        #label = tk.Label(self, text="Page One!!!", font=LARGE_FONT)
-        #label.pack(pady=10,padx=10)
+
 
         button1 = ttk.Button(self, text="Back to Home",
                             command=lambda: controller.show_frame(StartPage,0))
@@ -712,59 +718,7 @@ class PageOne(tk.Frame):
         panel4.grid(row =1, column = 2)
 
 
-        #variable = StringVar()
-        #variable.set(OPTIONS[0]) # default value
 
-        #option = OptionMenu(self, variable, *OPTIONS,command = self.action1)
-        #option.grid(row = 0, column = 1)
-
-
-
-
-class PageTwo(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Page Two!!!", font=LARGE_FONT)
-        label.pack(pady=10,padx=10)
-
-        button1 = ttk.Button(self, text="Back to Home",
-                            command=lambda: controller.show_frame(StartPage,0))
-        button1.pack()
-
-        button2 = ttk.Button(self, text="Page One",
-                            command=lambda: controller.show_frame(PageOne,0))
-        button2.pack()
-
-        OPTIONS = [
-                "kale",
-                "thyme",
-                "tomato",
-                "rosemary"
-        ]
-
-        variable = StringVar()
-        variable.set(OPTIONS[0]) # default value
-
-        option = OptionMenu(self, variable, *OPTIONS,command = self.action1)
-        option.pack()
-
-
-
-    def action1(self,val):
-        print val
-
-
-class PageThree(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Graph Page!", font=LARGE_FONT)
-        label.pack(pady=10,padx=10)
-
-        button1 = ttk.Button(self, text="Back to Home",
-                            command=lambda: controller.show_frame(StartPage,0))
-        button1.pack()
 
 
 

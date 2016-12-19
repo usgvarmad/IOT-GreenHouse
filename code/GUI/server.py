@@ -45,12 +45,7 @@ class MyTCPHandler(SocketServer.BaseRequestHandler):
                     fd = open('sm3.csv','a')
                     fd.write(str(counter)+","+dataArray[x+1]+"\n")
                     fd.close()
-            #list_of_items_in_line = line.split(",")
-            #first_int = int(list_of_items_in_line[0])
-
-        #fd = open('temp.csv','a')
-        #fd.write(self.data+"\n")
-        #fd.close()
+            
 
         # send back the control variables
         with open('control.txt', 'r') as f:
