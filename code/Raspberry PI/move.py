@@ -1,27 +1,5 @@
-#Step 0: Preamble
-#------------------------------------------------------------------------
-#------------------------------------------------------------------------
-#Program Title  : easy_stepper.py 
-#Code Written by: Salty Scott
-#Current Project: www.rowboboat.com
-#This code is a very basic example of using python to control a spark fun
-# easy driver.  The spark fun easy driver that I am using in this example
-# is connected to a 42HS4013A4 stepper motor and my raspberry pi.  Pin 23
-# is the direction control and pin 24 is the step control.  I am using
-# these components in the www.rowboboat.com project version 2.0 and I
-# hope someone finds this a useful and simple example.
-# This program expects two arguments: direction and steps
-# Example usage: sudo python easy_stepper.py left 1600
-# The above example would turn a 200 step motor one full revolution as by
-# default the easy driver 4.4 is in 1/8 microstep mode. However the stepper driver 
-# selected by gtaagii will default to one full step per step pulse, microstepping can
-# be selected if desired.
-#------------------------------------------------------------------------
-#------------------------------------------------------------------------
- 
-#Step 1: Import necessary libraries 
-#------------------------------------------------------------------------
-#------------------------------------------------------------------------
+# This script takes pictures and moves the camera along its slider
+# Boilerplate code from http://rowboboat.com/bay2/2015/01/02/python-stepper-motor-driver-example/
 import sys
 import RPi.GPIO as gpio #https://pypi.python.org/pypi/RPi.GPIO more info
 import time
@@ -153,10 +131,5 @@ camera.capture('plot4.jpg')
 
 m1m2p1() # go home
  
-#Step 7: Clear the GPIOs so that some other program might enjoy them
-#------------------------------------------------------------------------
-#------------------------------------------------------------------------
-#relase the GPIO
+
 gpio.cleanup()
-#------------------------------------------------------------------------
-#------------------------------------------------------------------------
