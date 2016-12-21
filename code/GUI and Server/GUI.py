@@ -161,7 +161,7 @@ def animate(i):
                 print "Plot 1 Watering Done!"
                 w0Str = "w0:off"
             elif (w0Str == "w0:off" and sm0YList[-1] < SOIL_0_THRESHOLD):
-                w0Deadline = addSecs(w0Start, 10)
+                w0Deadline = addSecs(w0Start, 60*10)
                 w0Str = "w0:on"
         else:
             w0Str = "w0:on"
@@ -173,7 +173,7 @@ def animate(i):
                 print "Plot 2 Watering Done!"
                 w1Str = "w1:off"
             elif (w1Str == "w1:off" and sm1YList[-1] < SOIL_1_THRESHOLD):
-                w1Deadline = addSecs(w1Start, 10)
+                w1Deadline = addSecs(w1Start, 60*10)
                 w1Str = "w1:on"
         else:
             w1Str = "w1:on"
@@ -185,7 +185,7 @@ def animate(i):
                 print "Plot 3 Watering Done!"
                 w2Str = "w2:off"
             elif (w2Str == "w2:off" and sm2YList[-1] < SOIL_2_THRESHOLD):
-                w2Deadline = addSecs(w2Start, 10)
+                w2Deadline = addSecs(w2Start, 60*10)
                 w2Str = "w2:on"
         else:
             w2Str = "w2:on"
@@ -197,7 +197,7 @@ def animate(i):
                 print "Plot 4 Watering Done!"
                 w2Str = "w2:off"
             elif (w2Str == "w2:off" and sm3YList[-1] < SOIL_3_THRESHOLD):
-                w3Deadline = addSecs(w3Start, 10)
+                w3Deadline = addSecs(w3Start, 60*10)
                 w2Str = "w2:on"
         else:
             w2Str = "w2:on"

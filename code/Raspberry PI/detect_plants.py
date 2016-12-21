@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# OpenCV code adapted from http://www.pyimagesearch.com/2014/04/21/building-pokedex-python-finding-game-boy-screen-step-4-6/
 import numpy as np
 import cv2
 from picamera import PiCamera

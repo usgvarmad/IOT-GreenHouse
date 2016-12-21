@@ -14,6 +14,12 @@ Our goal with Barn Owl is to automate a micro-farm using the existing greenhouse
 * [Barn Owl - Camera Slider Demo](https://www.youtube.com/watch?v=YH9azuOEQMQ)
 * [Barn Owl - App Demo](https://www.youtube.com/watch?v=E3g4D_ApXCE)
 
+### REPORT
+Please see the file BarnOwlFinalReport.pdf
 
 ### BUILD INSTRUCTIONS
-TODO: Steps to follow for anyone to use this code
+To use the scripts in the "code" folder, follow these steps:
+
+1. Flash Photon.ino in the Photon folder. Necessary libraries are in the Libraries folder. Be sure to update the server IP.
+2. Run server.py, stackSERVER.py, and GUI.py on a host PC. All CSV files in the Plant Profiles folder need to be in the same directory as GUI.py.
+3. All Rapsberry PI code can be run from anywhere on a PI. Be sure to update the host IP in the send.py script.
