@@ -1,0 +1,189 @@
+#include "math.h"
+#include "Pixy.h"
+#include <elapsedMillis.h>
+
+#define Calirate 0
+#define calDistance 12
+int calWidth = 40; //Calibrated width reading
+int calHeight = 29; //Calibrated height reading
+int pixelsWidth;   //read by the camera
+int pixelsHeight; //read by the camera
+float distanceWidth;   //calculated distance based on the width of the object
+float distanceHeight;  //calculated distance based on the height of the object
+float widthOfObject = 3.75; //inches (3.75 inches) real size of your object
+float heightOfObject = 2.5; //inches (2.5 inches) real size of your object
+int focalLengthWidth;  //calculated focal length for width
+int focalLengthHeight; //calculated focal length for height
+float avg;
+int feet = 0;
+int inches = 0; int k = 0; int i =0;
+Pixy pixy;
+elapsedMillis timeElapsed;
+int start_time = 0;
+float stop_value = 0;
+uint16_t blocks;
+int first = 1;
+
+void setup()
+{
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
+  pixy.init();
+  focalLengthWidth = (calWidth * calDistance) / widthOfObject;
+  focalLengthHeight = (calHeight * calDistance) / heightOfObject;
+
+  Serial.begin(9600);
+  Serial.print("Starting...\n");
+}
+
+void start_bot()
+{
+  if (feet >= 6) {
+    delay (2000);
+    blocks = pixy.getBlocks();
+  }
+  if (blocks > 0 && feet < 7)
+  {
+    Serial.println("\n Writing low high");
+    digitalWrite(4, LOW);
+    digitalWrite(5, HIGH);
+    digitalWrite(6, LOW);
+    digitalWrite(7, HIGH);
+    timeElapsed = 0;
+    start_time = 1;
+    stop_value = 151.5 * (((feet * 12) + inches) - 24);
+    Serial.print("\nStop timer value: ");
+    Serial.print(stop_value);
+  }
+}
+
+void stop_bot()
+{
+  Serial.println("\nWriting low");
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);  delay(100);
+  Serial.print("\nChecking Elapsed value: ");
+  Serial.print(timeElapsed);
+  timeElapsed = 0;
+  start_time = 0;
+  stop_value = 0;
+}
+
+
+void check_time()
+{
+  if (timeElapsed >= stop_value && start_time == 1)
+  {
+    stop_bot();
+  }
+  Serial.print("\nChecking timer value: ");
+  Serial.print(timeElapsed);
+
+}
+
+
+void rotate_bot()
+{
+  digitalWrite(4, LOW);
+  digitalWrite(5, HIGH);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+  delay(500);
+  digitalWrite(4, LOW);
+  digitalWrite(5, LOW);
+  digitalWrite(6, LOW);
+  digitalWrite(7, LOW);
+}
+
+
+void loop()
+{
+
+  static int i = 0;
+  int j;
+  blocks = pixy.getBlocks();
+  if (first == 1) {
+    delay (1000);
+  }
+  blocks = pixy.getBlocks();
+  Serial.print("blocks:");
+  Serial.print(blocks);
+  if (start_time == 1)
+  {
+    check_time();
+  }
+  delay(2000);
+  if (blocks)
+  {
+
+    if (start_time == 1)
+    {
+      check_time();
+    }
+
+    for (j = 0; j < blocks; j++)
+    {i++;
+      pixelsWidth = pixy.blocks[j].width;
+      pixelsHeight = pixy.blocks[j].height;
+      distanceWidth = (widthOfObject * focalLengthWidth) / pixelsWidth;
+      distanceHeight = (heightOfObject * focalLengthHeight) / pixelsHeight;
+            if(i%4 ==0){
+      avg  = sq(distanceWidth) + sq(distanceHeight);
+      avg  = sqrt(avg);
+      avg = round(avg);
+      feet = avg / 12;
+      inches = int(avg) % 12;
+      float cms = (feet * 30.48) + (inches * 2.54);
+      Serial.print("\nfeet ");
+      Serial.print(feet);
+      Serial.println(" in.");
+      Serial.print(inches);
+      Serial.println("\n\n");
+      }
+      if (feet >= 2)
+      {
+        start_bot();
+      }
+      else
+      {
+        stop_bot();
+      }
+      if (start_time == 1)
+      {
+        check_time();
+      }
+    }
+
+  }
+
+  else
+  {
+    if (start_time == 1)
+    {
+      check_time();
+      stop_bot();
+    }
+    else
+    {
+      Serial.print("\nChecking timer value: ");
+      Serial.print(timeElapsed);
+      if (timeElapsed >= 8000)
+      {
+        if (blocks ==0)
+        {
+        rotate_bot();
+        timeElapsed = 0;
+        }
+
+      }
+
+    }
+
+  }
+}
+
+
